@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/protag1.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/protag2.tscn" type="PackedScene" id=2]
+[ext_resource path="res://game.gd" type="Script" id=3]
+
+[node name="Node2D" type="Node2D"]
+position = Vector2( -1, 0 )
+script = ExtResource( 3 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 1, 0 )
+anchor_mode = 0
+current = true
+
+[node name="KinematicBody2D" parent="." instance=ExtResource( 1 )]
+position = Vector2( 1, 0 )
+
+[node name="KinematicBody2D2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 65, 0 )
+[connection signal="unit_selected" from="KinematicBody2D" to="." method="_on_KinematicBody2D_unit_selected"]
+[connection signal="unit_selected" from="KinematicBody2D2" to="." method="_on_KinematicBody2D2_unit_selected"]
+[connection signal="unit_selected" from="KinematicBody2D2" to="KinematicBody2D2" method="_on_KinematicBody2D2_unit_selected"]

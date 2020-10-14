@@ -7,32 +7,44 @@ class_name Player
 export var speed = 200
 var selected = false
 signal unit_selected
-
+signal moved
+var isMoving = false
 var target = Vector2()
 var velocity = Vector2()
 
 
 func _physics_process(_delta):
 	if selected:
+		if not isMoving and (target - position).length() > 2:
+			emit_signal('moved')
+			isMoving = true
+		if isMoving and (target - position).length() < 2:
+			emit_signal('moved')
+			isMoving = false 
 		velocity = (target - position).normalized() * speed
 		#rotation = velocity.angle()
-		if (target - position).length() > 5:
+		if (target - position).length() > 2:
 			velocity = move_and_slide(velocity)
 	else:
 		target = self.position
 		
 func _on_KinematicBody2D_input_event(_viewport, event, _shape_idx):
 	if  event is InputEventMouseButton and event.pressed and event.button_index == BUTTON_LEFT:
-		selected = true
 		emit_signal('unit_selected', self)
 			
 func unselect():
 	print("Deselected ", self.name)
 	selected = false
 
+func isSelected():
+	print("Selected ", self.name)
+	selected = true
+	
 func _input(event):
-	if  selected and event is InputEventMouseButton and event.is_pressed() and event.button_index == BUTTON_LEFT:
-			target = get_global_mouse_position()
+	if  not isMoving and selected and event is InputEventMouseButton and event.is_pressed() and event.button_index == BUTTON_LEFT:
+		target = get_global_mouse_position()
+		target[0] =  floor(target[0]/64)*64
+		target[1] =  floor(target[1]/64)*64
 
 
 #var grid_size = 64

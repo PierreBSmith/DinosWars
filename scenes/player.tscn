@@ -8,6 +8,8 @@ extents = Vector2( 8, 8 )
 
 [node name="KinematicBody2D" type="KinematicBody2D"]
 input_pickable = true
+collision_layer = 0
+collision_mask = 0
 script = ExtResource( 2 )
 
 [node name="player" type="Sprite" parent="."]
@@ -17,9 +19,5 @@ centered = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 8, 8 )
 shape = SubResource( 1 )
-
-[node name="RayCast2D" type="RayCast2D" parent="."]
-position = Vector2( 32, 32 )
-cast_to = Vector2( 0, 64 )
 [connection signal="input_event" from="." to="." method="_on_KinematicBody2D_input_event"]
 [connection signal="unit_selected" from="." to="." method="_on_KinematicBody2D_unit_selected"]

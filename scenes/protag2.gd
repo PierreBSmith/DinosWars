@@ -1,7 +1,7 @@
 extends Player
 
 func _ready():
-	pass
+	moveRange = 12
 
 
 

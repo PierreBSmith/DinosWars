@@ -5,28 +5,32 @@ class_name Player
 # var a = 2
 # var b = "text"
 export var speed = 200
+export var moveRange = 0
 var selected = false
 signal unit_selected
 signal moved
 var isMoving = false
-var target = Vector2()
 var velocity = Vector2()
+var gridCoords = Vector2()
 
-
+func _ready():
+	gridCoords = self.position/64
+	
 func _physics_process(_delta):
 	if selected:
-		if not isMoving and (target - position).length() > 2:
+		if not isMoving and (gridCoords*64 - position).length() > 2:
 			emit_signal('moved')
 			isMoving = true
-		if isMoving and (target - position).length() < 2:
+		if isMoving and (gridCoords*64 - position).length() < 2:
 			emit_signal('moved')
+			emit_signal('unit_selected', self)
 			isMoving = false 
-		velocity = (target - position).normalized() * speed
 		#rotation = velocity.angle()
-		if (target - position).length() > 2:
+		velocity = (gridCoords*64 - position).normalized() * speed
+		if (gridCoords*64 - position).length() > 2:
 			velocity = move_and_slide(velocity)
-	else:
-		target = self.position
+		else:
+			 self.position = gridCoords*64
 		
 func _on_KinematicBody2D_input_event(_viewport, event, _shape_idx):
 	if  event is InputEventMouseButton and event.pressed and event.button_index == BUTTON_LEFT:
@@ -42,40 +46,13 @@ func isSelected():
 	
 func _input(event):
 	if  not isMoving and selected and event is InputEventMouseButton and event.is_pressed() and event.button_index == BUTTON_LEFT:
-		target = get_global_mouse_position()
-		target[0] =  floor(target[0]/64)*64
-		target[1] =  floor(target[1]/64)*64
+		var mousePos = get_global_mouse_position()
+		var x =  floor(mousePos[0]/64)
+		var y =  floor(mousePos[1]/64)
+		if abs(x - gridCoords.x) + abs(y - gridCoords.y) <= self.moveRange:
+			gridCoords = Vector2(x,y)
 
 
-#var grid_size = 64
-#onready var ray = $RayCast2D
-#
-#var inputs = {
-#	'ui_up' : Vector2.UP,
-#	'ui_down' : Vector2.DOWN,
-#	'ui_left' : Vector2.LEFT,
-#	'ui_right' : Vector2.RIGHT
-#}
-#
-#func _unhandled_input(event):
-#	for dir in inputs.keys():
-#		if event.is_action_pressed(dir):
-#			move(dir)
-#
-#func move(dir):
-#	var vector_pos = inputs[dir] * grid_size
-#	ray.cast_to = vector_pos
-#	ray.force_raycast_update()
-#	if !ray.is_colliding():
-#		position += vector_pos
-#
-#
-#
-#func _on_KinematicBody2D_input_event(viewport, event, shape_idx):
-#	if event is InputEventMouseButton:
-#		if event.is_pressed():
-#			pass
-#	pass # Replace with function body.
 
 
 

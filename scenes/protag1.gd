@@ -1,7 +1,7 @@
 extends Player
 
 func _ready():
-	pass
+	moveRange = 6
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"

@@ -13,11 +13,11 @@ position = Vector2( 1, 0 )
 anchor_mode = 0
 current = true
 
-[node name="KinematicBody2D" parent="." instance=ExtResource( 1 )]
+[node name="Gon" parent="." instance=ExtResource( 1 )]
 position = Vector2( 1, 0 )
 
-[node name="KinematicBody2D2" parent="." instance=ExtResource( 2 )]
+[node name="Sasuke" parent="." instance=ExtResource( 2 )]
 position = Vector2( 65, 0 )
-[connection signal="unit_selected" from="KinematicBody2D" to="." method="_on_KinematicBody2D_unit_selected"]
-[connection signal="unit_selected" from="KinematicBody2D2" to="." method="_on_KinematicBody2D2_unit_selected"]
-[connection signal="unit_selected" from="KinematicBody2D2" to="KinematicBody2D2" method="_on_KinematicBody2D2_unit_selected"]
+[connection signal="unit_selected" from="Gon" to="." method="_on_KinematicBody2D_unit_selected"]
+[connection signal="unit_selected" from="Sasuke" to="." method="_on_KinematicBody2D2_unit_selected"]
+[connection signal="unit_selected" from="Sasuke" to="Sasuke" method="_on_KinematicBody2D2_unit_selected"]

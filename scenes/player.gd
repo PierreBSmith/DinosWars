@@ -11,30 +11,28 @@ signal unit_selected
 var target = Vector2()
 var velocity = Vector2()
 
-func _input(event):
-	if  selected and event is InputEventMouseButton and event.is_pressed() and event.button_index == BUTTON_RIGHT:
-			target = get_global_mouse_position()
 
 func _physics_process(_delta):
-	velocity = (target - position).normalized() * speed
-	#rotation = velocity.angle()
-	if (target - position).length() > 5:
-		velocity = move_and_slide(velocity)
+	if selected:
+		velocity = (target - position).normalized() * speed
+		#rotation = velocity.angle()
+		if (target - position).length() > 5:
+			velocity = move_and_slide(velocity)
+	else:
+		target = self.position
 		
 func _on_KinematicBody2D_input_event(_viewport, event, _shape_idx):
 	if  event is InputEventMouseButton and event.pressed and event.button_index == BUTTON_LEFT:
-		if not selected:
-			print("selected")
-			selected = true
-			emit_signal('unit_selected', self)
-		else:
-			unselect()
-
-	
+		selected = true
+		emit_signal('unit_selected', self)
+			
 func unselect():
-	print("unselected")
+	print("Deselected ", self.name)
 	selected = false
 
+func _input(event):
+	if  selected and event is InputEventMouseButton and event.is_pressed() and event.button_index == BUTTON_LEFT:
+			target = get_global_mouse_position()
 
 
 #var grid_size = 64

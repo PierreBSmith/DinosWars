@@ -10,49 +10,32 @@ var selected = false
 signal unit_selected
 signal moved
 var isMoving = false
-var velocity = Vector2()
 var gridCoords = Vector2()
 
 func _ready():
-	gridCoords = self.position/64
+	gridCoords = Vector2(int((self.position[0] + 5)/64),int((self.position[1] + 5)/64)) #the +5 is to account for small amounts of error
 	
-func _physics_process(_delta):
-	if selected:
-		if not isMoving and (gridCoords*64 - position).length() > 2:
-			emit_signal('moved')
-			isMoving = true
-		if isMoving and (gridCoords*64 - position).length() < 2:
-			emit_signal('moved')
-			emit_signal('unit_selected', self)
-			isMoving = false 
-		#rotation = velocity.angle()
-		velocity = (gridCoords*64 - position).normalized() * speed
-		if (gridCoords*64 - position).length() > 2:
-			velocity = move_and_slide(velocity)
+func _physics_process(_delta): #physics logic
+	#rotation = velocity.angle() dont uncomment this unless you know what you are doing
+	if gridCoords[0]*64 != self.position[0]: #move horizontally
+		if abs(gridCoords[0]*64 - self.position[0]) > 2:
+			move_and_slide(Vector2(gridCoords[0]*64 -  self.position[0],0).normalized() * speed)
 		else:
-			 self.position = gridCoords*64
-		
-func _on_KinematicBody2D_input_event(_viewport, event, _shape_idx):
-	if  event is InputEventMouseButton and event.pressed and event.button_index == BUTTON_LEFT:
-		emit_signal('unit_selected', self)
+			self.position[0] = gridCoords[0]*64
+	elif gridCoords[1]*64 != self.position[1]: #move vertically
+		if abs(gridCoords[1]*64 - self.position[1]) > 2:
+			move_and_slide(Vector2(0,gridCoords[1]*64 - self.position[1]).normalized() * speed)
+		else:
+			self.position[1] = gridCoords[1]*64
+	if not isMoving and (gridCoords*64 - position).length() != 0: #set the unit to be moving
+		emit_signal('moved')
+		isMoving = true
+	elif isMoving and (gridCoords*64 - position).length() == 0: #set the unit to be stopped
+		emit_signal('moved')
+		isMoving = false 
 			
-func unselect():
-	print("Deselected ", self.name)
-	selected = false
 
-func isSelected():
-	print("Selected ", self.name)
-	selected = true
 	
-func _input(event):
-	if  not isMoving and selected and event is InputEventMouseButton and event.is_pressed() and event.button_index == BUTTON_LEFT:
-		var mousePos = get_global_mouse_position()
-		var x =  floor(mousePos[0]/64)
-		var y =  floor(mousePos[1]/64)
-		if abs(x - gridCoords.x) + abs(y - gridCoords.y) <= self.moveRange:
-			gridCoords = Vector2(x,y)
-
-
 
 
 

@@ -17,28 +17,20 @@ func _ready():
 	
 func _physics_process(_delta): #physics logic
 	#rotation = velocity.angle() dont uncomment this unless you know what you are doing
-	if gridCoords[0]*64 != self.position[0]: #move horizontally
-		if abs(gridCoords[0]*64 - self.position[0]) > 2:
-			move_and_slide(Vector2(gridCoords[0]*64 -  self.position[0],0).normalized() * speed)
-		else:
-			self.position[0] = gridCoords[0]*64
-	elif gridCoords[1]*64 != self.position[1]: #move vertically
+	#print("hey ", OS.get_time().second)
+	if gridCoords[1]*64 != self.position[1]: #move vertically
 		if abs(gridCoords[1]*64 - self.position[1]) > 2:
 			move_and_slide(Vector2(0,gridCoords[1]*64 - self.position[1]).normalized() * speed)
 		else:
 			self.position[1] = gridCoords[1]*64
+	elif gridCoords[0]*64 != self.position[0]: #move horizontally
+		if abs(gridCoords[0]*64 - self.position[0]) > 2:
+			move_and_slide(Vector2(gridCoords[0]*64 -  self.position[0],0).normalized() * speed)
+		else:
+			self.position[0] = gridCoords[0]*64
 	if not isMoving and (gridCoords*64 - position).length() != 0: #set the unit to be moving
 		emit_signal('moved')
 		isMoving = true
 	elif isMoving and (gridCoords*64 - position).length() == 0: #set the unit to be stopped
 		emit_signal('moved')
-		isMoving = false 
-			
-
-	
-
-
-
-
-
-
+		isMoving = false

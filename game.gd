@@ -33,23 +33,24 @@ func unit_clicked(unit): #called whenever a unit is clicked, handles selection a
 #currently only does anything when a unit is left clicked or if there is a click in the selected units movement range
 func _unhandled_input(event): 
 	if  not isMoving and event is InputEventMouseButton and event.is_pressed() and event.button_index == BUTTON_LEFT:
-		var mousePos = get_global_mouse_position()
+		var mousePos = get_global_mouse_position() #get click location
 		var x =  int(mousePos[0]/64)
 		var y =  int(mousePos[1]/64)
 		selectedTile = Vector2(x,y)
-		for i in unit_group:
+		for i in unit_group: #if you clicked a unit toggle whether it is selected
 			if i.gridCoords == selectedTile:
 				unit_clicked(i)
 				return
-		if selected and abs(x - selected.gridCoords.x) + abs(y - selected.gridCoords.y) <= selected.moveRange:
+		#if there is a unit at clicked location toggle selection of that unit
+		if selected and abs(x - selected.gridCoords.x) + abs(y - selected.gridCoords.y) <= selected.moveRange: 
 			selected.gridCoords = selectedTile
-			
-func _is_moved(): #toggles movement state in response to a signal from selected
+
+#toggles movement state in response to a signal from selected, deselects unit when it stops moving
+func _is_moved():
 	if isMoving:
 		isMoving = false
 		selected = null
 		movementNode.setSelected(null)
 	else:
 		isMoving = true
-		
 

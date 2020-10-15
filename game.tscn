@@ -29,6 +29,3 @@ script = ExtResource( 4 )
 [node name="MovementRange" type="Node2D" parent="."]
 z_index = -1
 script = ExtResource( 5 )
-[connection signal="unit_selected" from="Gon" to="." method="_on_KinematicBody2D_unit_selected"]
-[connection signal="unit_selected" from="Sasuke" to="Sasuke" method="_on_KinematicBody2D2_unit_selected"]
-[connection signal="unit_selected" from="Sasuke" to="." method="_on_KinematicBody2D2_unit_selected"]

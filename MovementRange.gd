@@ -19,6 +19,8 @@ func _draw():
 		for i in range(-selected.moveRange, selected.moveRange + 1):
 			for j in range(-(selected.moveRange - abs(i)),selected.moveRange - abs(i) + 1): 
 				draw_rect(Rect2(Vector2(selected.position[0] + i*64,selected.position[1] + j*64), Vector2(64,64)),Color("#0000FF"), true)
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+				if abs(i) + abs(j) >= selected.moveRange:
+					draw_rect(Rect2(Vector2(selected.position[0] + (i + 1)*64,selected.position[1] + j*64), Vector2(64,64)),Color("#FF0000"), true)
+					draw_rect(Rect2(Vector2(selected.position[0] + -(i + 1)*64,selected.position[1] + -(j)*64), Vector2(64,64)),Color("#FF0000"), true)
+		draw_rect(Rect2(Vector2(selected.position[0],selected.position[1] + (selected.moveRange + 1)*64), Vector2(64,64)),Color("#FF0000"), true)
+		draw_rect(Rect2(Vector2(selected.position[0],selected.position[1] - (selected.moveRange + 1)*64), Vector2(64,64)),Color("#FF0000"), true)

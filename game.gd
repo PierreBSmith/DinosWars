@@ -53,4 +53,3 @@ func _is_moved():
 		movementNode.setSelected(null)
 	else:
 		isMoving = true
-

@@ -7,7 +7,8 @@ extends Node2D
 
 var selected = null
 var isMoving = false
-var unit_group = []
+var friendly_group = []
+var enemy_group = []
 var movementNode = null
 var selectedTile = null
 
@@ -16,11 +17,16 @@ func _ready():
 	set_process_input(true)
 	for child in self.get_children():
 		if child is KinematicBody2D:
-			unit_group.append(child)
+			if child.friendly:
+				friendly_group.append(child)
+			elif not child.friendly:
+				enemy_group.append(child)
 		if child.name == "MovementRange":
 			movementNode = child
-	for node in unit_group:
+	for node in friendly_group:
 		node.connect("moved", self, "_is_moved")
+	for node in enemy_group:
+		node.connect("moved", self, "_is_,moved")
 			
 func unit_clicked(unit): #called whenever a unit is clicked, handles selection and deselection
 	if not isMoving:
@@ -37,12 +43,16 @@ func _unhandled_input(event):
 		var x =  int(mousePos[0]/64)
 		var y =  int(mousePos[1]/64)
 		selectedTile = Vector2(x,y)
-		for i in unit_group: #if you clicked a unit toggle whether it is selected
+		for i in enemy_group: #if you clicked a unit toggle whether it is selected
+			if i.gridCoords == selectedTile:
+				unit_clicked(i)
+				return
+		for i in friendly_group: #if you clicked a unit toggle whether it is selected
 			if i.gridCoords == selectedTile:
 				unit_clicked(i)
 				return
 		#if there is a unit at clicked location toggle selection of that unit
-		if selected and abs(x - selected.gridCoords.x) + abs(y - selected.gridCoords.y) <= selected.moveRange: 
+		if selected and selected.friendly and abs(x - selected.gridCoords.x) + abs(y - selected.gridCoords.y) <= selected.moveRange: 
 			selected.gridCoords = selectedTile
 
 #toggles movement state in response to a signal from selected, deselects unit when it stops moving

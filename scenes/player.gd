@@ -12,7 +12,9 @@ signal unit_selected
 signal moved
 var isMoving = false
 var gridCoords = Vector2()
-
+var friendly = true
+var hasAction = true
+var attackRange = 1
 func _ready():
 	gridCoords = Vector2(int((self.position[0] + 5)/64),int((self.position[1] + 5)/64)) #the +5 is to account for small amounts of error
 	

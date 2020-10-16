@@ -1,4 +1,4 @@
 extends Player
 
 func _ready():
-	moveRange = 6
+	moveRange = 4

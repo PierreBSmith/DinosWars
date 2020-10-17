@@ -10,12 +10,18 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "KinematicBody2D",
-"class": "Player",
+"class": "Unit",
 "language": "GDScript",
-"path": "res://units/base_unit/player.gd"
+"path": "res://units/base_unit/Unit.gd"
+}, {
+"base": "Node",
+"class": "Unit_type",
+"language": "GDScript",
+"path": "res://scripts/Unit_type.gd"
 } ]
 _global_script_class_icons={
-"Player": ""
+"Unit": "",
+"Unit_type": ""
 }
 
 [application]
@@ -64,5 +70,5 @@ ui_down={
 
 [rendering]
 
-environment/default_clear_color=Color( 100, 100, 100, 1 )
+environment/default_clear_color=Color( 0, 0, 0, 1 )
 environment/default_environment="res://default_env.tres"

@@ -1,4 +1,6 @@
-extends Player
+extends Unit
 
 func _ready():
-	moveRange = 6
+	self.moveRange = 6
+	self.friendly = Unit_type.ENEMY
+

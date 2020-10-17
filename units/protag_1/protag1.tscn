@@ -1,8 +1,9 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://units/base_unit/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://units/base_unit/Unit.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/Assets/gon.jpg" type="Texture" id=2]
 [ext_resource path="res://units/protag_1/protag1.gd" type="Script" id=3]
+
 
 [node name="KinematicBody2D" instance=ExtResource( 1 )]
 script = ExtResource( 3 )

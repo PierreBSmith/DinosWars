@@ -1,4 +1,4 @@
-extends Player
+extends Unit
 
 func _ready():
-	moveRange = 4
+	self.moveRange = 4

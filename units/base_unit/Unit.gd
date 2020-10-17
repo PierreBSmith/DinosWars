@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-class_name Player
+class_name Unit
 
 export var speed = 500
 var moveError = speed/100
@@ -9,7 +9,7 @@ var selected = false
 signal moved
 var isMoving = false
 var gridCoords = Vector2()
-var friendly = true
+var friendly = Unit_type.FRIENDLY
 var hasAction = true
 var attackRange = 1
 

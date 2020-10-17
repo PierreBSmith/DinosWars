@@ -17,9 +17,9 @@ func _ready():
 	set_process_input(true)
 	for child in self.get_children():
 		if child is KinematicBody2D:
-			if child.friendly:
+			if child.friendly == Unit_type.FRIENDLY:
 				friendly_group.append(child)
-			elif not child.friendly:
+			elif child.friendly == Unit_type.ENEMY:
 				enemy_group.append(child)
 		if child.name == "MovementRange":
 			movementNode = child
@@ -52,7 +52,7 @@ func _unhandled_input(event):
 				unit_clicked(i)
 				return
 		#if there is a unit at clicked location toggle selection of that unit
-		if selected and selected.friendly and abs(x - selected.gridCoords.x) + abs(y - selected.gridCoords.y) <= selected.moveRange: 
+		if selected and selected.friendly == Unit_type.FRIENDLY and abs(x - selected.gridCoords.x) + abs(y - selected.gridCoords.y) <= selected.moveRange: 
 			selected.gridCoords = selectedTile
 
 #toggles movement state in response to a signal from selected, deselects unit when it stops moving

@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node",
+"class": "BaseTile",
+"language": "GDScript",
+"path": "res://scripts/BaseTile.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Unit",
 "language": "GDScript",
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://scripts/Unit_type.gd"
 } ]
 _global_script_class_icons={
+"BaseTile": "",
 "Unit": "",
 "Unit_type": ""
 }

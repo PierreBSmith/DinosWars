@@ -1,4 +1,4 @@
 extends Unit
 
 func _ready():
-	self.moveRange = 4
+	self.move_range = 4

@@ -5,16 +5,17 @@ class_name BaseTile
 # var a = 2
 # var b = "text"
 
-var occupied = false
+var occupied = null
+var grid_coords
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	grid_coords = Vector2(int((get_child(0).position[0] + 5)/64),int((get_parent().position[1] + 5)/64)) #the +5 is to account for small amounts of error
 
-func toggle_occupied():
-	if occupied:
-		occupied = false
+func toggle_occupied(unit = null):
+	if occupied == null:
+		occupied = unit
 	else:
-		occupied = true
+		occupied = null
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass

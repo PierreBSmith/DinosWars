@@ -16,18 +16,13 @@ var active_team = Unit_type.FRIENDLY
 var movementRange = null
 var selectedTile = null
 var board = null
-var boardTiles = []
+var enemy_move_queue = []
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	set_process_input(true)
 	for child in self.get_children():
 		if child.name == "Board":
 			board = child
-			for row in board.get_children():
-				var boardRow = []
-				for tile in row.get_children():
-					boardRow.append(tile)
-				boardTiles.append(boardRow)
 		elif child is KinematicBody2D:
 			occupy_tile(child)
 			all_group.append(child)
@@ -43,7 +38,6 @@ func _ready():
 	for node in all_group:
 		node.connect("moved", self, "_is_moved")
 		
-			
 func unit_clicked(unit): #called whenever a unit is clicked, handles selection and deselection
 	if not isMoving:
 		if selected != null and selected.name == unit.name:
@@ -68,7 +62,7 @@ func _unhandled_input(event):
 				unit_clicked(i)
 				return
 		#if there is a unit at clicked location toggle selection of that unit
-		if active_team == Unit_type.FRIENDLY and selected and selected.friendly == Unit_type.FRIENDLY and abs(x - selected.grid_coords.x) + abs(y - selected.grid_coords.y) <= selected.moveRange: 
+		if active_team == Unit_type.FRIENDLY and selected and selected.friendly == Unit_type.FRIENDLY and abs(x - selected.grid_coords.x) + abs(y - selected.grid_coords.y) <= selected.move_range: 
 			selected.grid_coords = selectedTile
 
 func next_turn():
@@ -77,7 +71,6 @@ func next_turn():
 		for unit in enemy_group:
 			active_group.append(unit)
 		enemy_turn()
-		next_turn()
 	elif active_team == Unit_type.ENEMY:
 		#currently no non enemy NPC implemented
 		if npc_group:
@@ -95,13 +88,29 @@ func next_turn():
 	
 func enemy_turn():
 	for unit in active_group:
-		selected = unit
-		if !boardTiles[selected.grid_coords.x][selected.grid_coords.y - 1].occupied:
-			selected.grid_coords = Vector2(unit.grid_coords.x, unit.grid_coords.y - 1)
-
+		var path = board.path_find_enemy(unit)
+		if path:
+			var amount_moved = 0
+			for move in path:
+				if amount_moved < unit.move_range:
+					enemy_move_queue.append([move, unit])
+				amount_moved += 1
+			unoccupy_tile(unit)
+			var saved_coords = unit.grid_coords
+			unit.grid_coords = path[-1].grid_coords
+			occupy_tile(unit)
+			unit.grid_coords = saved_coords
+	if enemy_move_queue:
+		var first_move = enemy_move_queue.pop_front()
+		selected = first_move[1]
+		selected.grid_coords = first_move[0].grid_coords
+	else:
+		active_group.clear()
+		next_turn()
+			
 func occupy_tile(unit):
-	boardTiles[unit.grid_coords.x][unit.grid_coords.y].toggle_occupied()
-	unit.occupied_tile = boardTiles[unit.grid_coords.x][unit.grid_coords.y]
+	board.board_tiles[unit.grid_coords.x][unit.grid_coords.y].toggle_occupied(unit)
+	unit.occupied_tile = board.board_tiles[unit.grid_coords.x][unit.grid_coords.y]
 
 func unoccupy_tile(unit):
 	unit.occupied_tile.toggle_occupied()
@@ -109,16 +118,32 @@ func unoccupy_tile(unit):
 	
 #toggles movement state in response to a signal from selected, deselects unit when it stops moving
 func _is_moved():
-	if isMoving:
-		print(selected.name, " stopped moving")
-		isMoving = false
-		active_group.erase(selected)
-		occupy_tile(selected)
-		selected = null
-		movementRange.setSelected(null)
-		if active_team == Unit_type.FRIENDLY and !active_group:
-			next_turn()
+	if active_team == Unit_type.FRIENDLY:
+		if isMoving:
+			print(selected.name, " stopped moving")
+			isMoving = false
+			active_group.erase(selected)
+			occupy_tile(selected)
+			selected = null
+			movementRange.setSelected(null)
+			if !active_group:
+				next_turn()
+		else:
+			print(selected.name, " is moving")
+			unoccupy_tile(selected)
+			isMoving = true
 	else:
-		print(selected.name, " is moving")
-		unoccupy_tile(selected)
-		isMoving = true
+		if isMoving:
+			isMoving = false
+			occupy_tile(selected)
+			if enemy_move_queue:
+				var next_move = enemy_move_queue.pop_front()
+				selected = next_move[1]
+				selected.grid_coords = next_move[0].grid_coords
+			else:
+				selected = null
+				active_group.clear()
+				next_turn()
+		else:
+			isMoving = true
+			unoccupy_tile(selected)

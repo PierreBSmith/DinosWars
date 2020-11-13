@@ -4,7 +4,7 @@ class_name Unit
 
 export var speed = 500
 var moveError = speed/100
-export var moveRange = 0
+export var move_range = 0
 var selected = false
 signal moved
 var isMoving = false
@@ -16,6 +16,7 @@ var occupied_tile = null
 
 func _ready():
 	grid_coords = Vector2(int((self.position[0] + 5)/64),int((self.position[1] + 5)/64)) #the +5 is to account for small amounts of error
+	
 	
 func _physics_process(_delta): #physics logic
 	#rotation = velocity.angle() dont uncomment this unless you know what you are doing

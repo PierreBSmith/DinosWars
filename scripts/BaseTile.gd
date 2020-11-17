@@ -11,8 +11,9 @@ var grid_coords
 func _ready():
 	grid_coords = Vector2(int((get_child(0).position[0] + 5)/64),int((get_parent().position[1] + 5)/64)) #the +5 is to account for small amounts of error
 
+#if called with a unit passed will have unit occupy that tile, otherwise sets occupied to null
 func toggle_occupied(unit = null):
-	if occupied == null:
+	if unit != null:
 		occupied = unit
 	else:
 		occupied = null

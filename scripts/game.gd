@@ -85,7 +85,8 @@ func next_turn():
 		active_team = Unit_type.FRIENDLY
 		for unit in friendly_group:
 			active_group.append(unit)
-	
+			
+#FIXME:the occupy_tile function needs to be changed or it cant be called from here
 func enemy_turn():
 	for unit in active_group:
 		var path = board.path_find_enemy(unit)

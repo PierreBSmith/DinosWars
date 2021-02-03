@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "BaseTile",
 "language": "GDScript",
-"path": "res://scripts/BaseTile.gd"
+"path": "res://scripts/Tile_Scripts/BaseTile.gd"
 }, {
 "base": "Node",
 "class": "Enums",

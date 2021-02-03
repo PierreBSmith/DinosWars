@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/Assets/wall.png" type="Texture" id=1]
-[ext_resource path="res://scripts/FloorTile.gd" type="Script" id=2]
+[ext_resource path="res://scripts/Tile_Scripts/GrassTile.gd" type="Script" id=2]
+[ext_resource path="res://scripts/Tile_Scripts/ForestTile.gd" type="Script" id=3]
 
 [node name="Board" type="Node2D"]
 
@@ -21,7 +22,7 @@ offset = Vector2( -1, -1 )
 [node name="StaticBody2D4" type="StaticBody2D" parent="Row0"]
 collision_layer = 0
 collision_mask = 0
-script = ExtResource( 2 )
+script = ExtResource( 3 )
 
 [node name="wall" type="Sprite" parent="Row0/StaticBody2D4"]
 position = Vector2( 320, 0 )

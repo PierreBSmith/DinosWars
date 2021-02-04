@@ -4,10 +4,6 @@
 [ext_resource path="res://assets/Assets/sasuke.png" type="Texture" id=2]
 [ext_resource path="res://units/protag_2/protag2.gd" type="Script" id=3]
 
-
-
-
-
 [node name="KinematicBody2D" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
 

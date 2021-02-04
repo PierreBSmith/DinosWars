@@ -13,6 +13,8 @@ var friendly = Unit_type.FRIENDLY
 var hasAction = true
 var attackRange = 1
 var occupied_tile = null
+var attackDamage = 0
+var hp = 0
 
 func _ready():
 	grid_coords = Vector2(int((self.position[0] + 5)/64),int((self.position[1] + 5)/64)) #the +5 is to account for small amounts of error
